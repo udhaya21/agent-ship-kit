@@ -84,8 +84,7 @@ Not included here; install them from their authors:
 
 ## Credits
 
-The delegation rules grew out of
-[orchestrate-work](https://github.com/udhaya21/orchestrate-work), which builds on [Theo's](https://x.com/theo/status/2072482460122964067?s=46)
+The delegation rules build on [Theo's](https://x.com/theo/status/2072482460122964067?s=46)
 rate-limit thread and Matt Shumer's
 ["How I Prompt Fable"](https://simplemarkdowneditor.com/pub/IbaCrTjLJT?key=uQOQ2NPO3TTUSXyYDjyLf).
 
