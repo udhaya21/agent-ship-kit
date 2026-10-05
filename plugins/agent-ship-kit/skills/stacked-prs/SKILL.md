@@ -54,14 +54,14 @@ The branch already holds the whole change. Cut it by subtraction, never by cherr
 git fetch origin
 MB=$(git merge-base origin/main origin/FEATURE)   # the merge-base, not origin/main
 git tag -f split-baseline origin/FEATURE          # the "lose nothing" reference
-git diff --name-status "$MB"...split-baseline > /tmp/status.txt
+git diff --no-renames --name-status "$MB"...split-baseline > /tmp/status.txt   # renames as D + A
 ```
 
 Partition every path in `status.txt` into bottom and top. Materialise the top set to a file,
 split by status, because `git checkout` treats each status differently:
 
 ```bash
-awk -F'\t' '$1=="M"{print $2}' top-set.txt > M-paths
+awk -F'\t' '$1=="M"||$1=="T"{print $2}' top-set.txt > M-paths   # T = typechange
 awk -F'\t' '$1=="D"{print $2}' top-set.txt > D-paths
 awk -F'\t' '$1=="A"{print $2}' top-set.txt > A-paths
 ```
@@ -70,9 +70,9 @@ Build the **bottom** by restoring the top's paths to merge-base content:
 
 ```bash
 git switch FEATURE
-git checkout "$MB" --pathspec-from-file=M-paths
-git checkout "$MB" --pathspec-from-file=D-paths   # re-creates what the branch deleted
-xargs git rm < A-paths                            # drops what the branch added
+[ -s M-paths ] && git --literal-pathspecs checkout "$MB" --pathspec-from-file=M-paths
+[ -s D-paths ] && git --literal-pathspecs checkout "$MB" --pathspec-from-file=D-paths   # re-creates deletions
+[ -s A-paths ] && git --literal-pathspecs rm --pathspec-from-file=A-paths   # drops additions
 git commit
 ```
 
@@ -81,9 +81,9 @@ Build the **top** by resetting onto the new bottom and re-applying from the base
 ```bash
 git switch -c TOP FEATURE
 git reset --hard FEATURE
-git checkout split-baseline --pathspec-from-file=M-paths
-git checkout split-baseline --pathspec-from-file=A-paths
-xargs git rm < D-paths                            # re-applies the branch's deletions
+[ -s M-paths ] && git --literal-pathspecs checkout split-baseline --pathspec-from-file=M-paths
+[ -s A-paths ] && git --literal-pathspecs checkout split-baseline --pathspec-from-file=A-paths
+[ -s D-paths ] && git --literal-pathspecs rm --pathspec-from-file=D-paths   # re-applies deletions
 git commit
 ```
 
@@ -95,8 +95,9 @@ Four things this shape exists to survive:
   your layer for any path that moved meanwhile.
 - **`git checkout` cannot apply a deletion**, and errors on a pathspec absent from the ref.
   Every non-`M` status needs the explicit `git rm` or reverse-checkout above.
-- **`--pathspec-from-file`, not `$(<file)`.** Paths containing `[id]` or `[[...slug]]` are
-  glob-special.
+- **`--literal-pathspecs` on every checkout and rm.** Git globs pathspecs even from a file, so
+  `app/[id]/page.tsx` also matches `app/i/page.tsx`. `--pathspec-from-file` keeps spaces intact,
+  and the `[ -s ]` guard matters: an empty file turns `git checkout <ref>` into a branch switch.
 - **Rebuild the top rather than rebasing it.** Resetting onto the new bottom and re-applying
   the file set is one clean commit; rebasing hundreds of commits through a subtraction is not.
 
