@@ -1,0 +1,12 @@
+{
+  "description": "agent-ship-kit: kickoff card, context guard, LSP-first search. Each one is toggled in the plugin options.",
+  "hooks": {
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/orchestration-card.py\"", "timeout": 5 } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "*", "hooks": [ { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/context-guard.py\"", "timeout": 5 } ] },
+      { "matcher": "Bash|Grep", "hooks": [ { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/lsp-first.py\"", "timeout": 5 } ] }
+    ]
+  }
+}

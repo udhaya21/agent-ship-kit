@@ -1,0 +1,11 @@
+{
+  "name": "agent-ship-kit",
+  "description": "Ship with agents: pass/fail bars before delegating, independent cross-model review, commit/branch/PR conventions, stacked PRs, and a pre-push rule-check gate.",
+  "version": "2.0.0",
+  "author": {
+    "name": "udhaya21"
+  },
+  "homepage": "https://github.com/udhaya21/agent-ship-kit",
+  "license": "MIT",
+  "skills": "./skills/"
+}

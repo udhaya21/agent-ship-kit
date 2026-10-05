@@ -1,0 +1,17 @@
+{
+  "name": "agent-ship-kit",
+  "description": "Marketplace for agent-ship-kit: skills and hooks for shipping with coding agents.",
+  "owner": {
+    "name": "udhaya21"
+  },
+  "plugins": [
+    {
+      "name": "agent-ship-kit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-ship-kit"
+      },
+      "description": "Ship with agents: pass/fail bars before delegating, independent cross-model review, commit/branch/PR conventions, stacked PRs, and a pre-push rule-check gate."
+    }
+  ]
+}

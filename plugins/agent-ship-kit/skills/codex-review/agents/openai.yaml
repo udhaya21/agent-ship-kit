@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Review"
+  short_description: "Independent code review with Codex CLI"
+  default_prompt: "Use $codex-review to independently review my current changes."

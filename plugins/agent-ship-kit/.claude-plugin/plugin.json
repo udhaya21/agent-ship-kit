@@ -1,0 +1,42 @@
+{
+  "name": "agent-ship-kit",
+  "version": "2.0.0",
+  "description": "Ship with agents: pass/fail bars before delegating, independent cross-model review, commit/branch/PR conventions, stacked PRs, and a pre-push rule-check gate.",
+  "author": {
+    "name": "udhaya21"
+  },
+  "homepage": "https://github.com/udhaya21/agent-ship-kit",
+  "license": "MIT",
+  "userConfig": {
+    "orchestration_card": {
+      "type": "boolean",
+      "title": "Kickoff card",
+      "description": "Inject a short delegation kickoff card on every non-trivial prompt.",
+      "default": true
+    },
+    "context_guard": {
+      "type": "boolean",
+      "title": "Context guard",
+      "description": "Warn once when context crosses the handoff and hard-stop thresholds.",
+      "default": true
+    },
+    "context_handoff_k": {
+      "type": "number",
+      "title": "Handoff threshold (k tokens)",
+      "description": "Context size that triggers the handoff warning.",
+      "default": 200
+    },
+    "context_hard_k": {
+      "type": "number",
+      "title": "Hard-stop threshold (k tokens)",
+      "description": "Context size that triggers the hard-stop warning.",
+      "default": 300
+    },
+    "lsp_first": {
+      "type": "boolean",
+      "title": "LSP-first search",
+      "description": "Block bare camelCase/PascalCase grep over source files and point to the LSP tool. Enable only if you have an LSP plugin installed.",
+      "default": false
+    }
+  }
+}
