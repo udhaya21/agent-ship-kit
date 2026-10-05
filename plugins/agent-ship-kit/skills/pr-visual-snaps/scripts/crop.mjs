@@ -16,11 +16,15 @@ let y = Math.round(+ys * dpr);
 let w = Math.round(+ws * dpr);
 let h = Math.round(+hs * dpr);
 
-// clamp to image bounds so an over-long rect never throws
+// clamp to image bounds; a rect fully outside the image is an error
 x = Math.max(0, Math.min(x, img.width));
 y = Math.max(0, Math.min(y, img.height));
 w = Math.min(w, img.width - x);
 h = Math.min(h, img.height - y);
+if (w <= 0 || h <= 0) {
+  console.error(`crop rect lies outside ${src} (${img.width}x${img.height})`);
+  process.exit(1);
+}
 
 const o = new PNG({ width: w, height: h });
 for (let row = 0; row < h; row++) {
