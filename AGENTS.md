@@ -26,8 +26,9 @@ Violations block the push until fixed or waived by a human.
 
 ## Skills
 
-When a task matches one of these, read its `SKILL.md` first and follow it. Paths are relative to
-`plugins/agent-ship-kit/skills/`.
+When a task matches one of these, read its `SKILL.md` first and follow it. Skills live under
+`plugins/agent-ship-kit/skills/` in https://github.com/udhaya21/agent-ship-kit; if this file was
+copied into a project, copy the skills you use alongside it.
 
 | Skill | Use when |
 | --- | --- |
