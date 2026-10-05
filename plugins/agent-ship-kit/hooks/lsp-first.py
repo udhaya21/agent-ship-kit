@@ -142,7 +142,9 @@ def main():
 
     if tool == "Grep":
         term = (ti.get("pattern") or "").strip()
-        scope = " ".join(str(ti.get(k) or "") for k in ("path", "glob", "type"))
+        ftype = ti.get("type")
+        scope = " ".join([str(ti.get("path") or ""), str(ti.get("glob") or ""),
+                          f".{ftype}" if ftype else ""])
         if ESCAPE in f"{term} {scope}":
             allow()
         if qualifies(term, scope):

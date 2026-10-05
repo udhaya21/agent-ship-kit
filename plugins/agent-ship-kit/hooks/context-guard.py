@@ -14,9 +14,16 @@ def _opt(name, default):
     return os.environ.get("CLAUDE_PLUGIN_OPTION_" + name) or default
 
 
+def _tokens(name, default_k):
+    try:
+        return int(float(_opt(name, default_k)) * 1000)
+    except (ValueError, OverflowError):
+        return default_k * 1000
+
+
 THRESHOLDS = [
-    (int(float(_opt("CONTEXT_HANDOFF_K", 200)) * 1000), "handoff"),
-    (int(float(_opt("CONTEXT_HARD_K", 300)) * 1000), "hard"),
+    (_tokens("CONTEXT_HANDOFF_K", 200), "handoff"),
+    (_tokens("CONTEXT_HARD_K", 300), "hard"),
 ]
 TAIL_BYTES = 256 * 1024
 STATE_DIR = os.path.join(
